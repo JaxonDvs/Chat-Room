@@ -1,0 +1,21 @@
+# One-click deploy on Render. The disk is what makes the room persistent —
+# without it every redeploy would start from an empty database.
+services:
+  - type: web
+    name: chat-room
+    runtime: node
+    plan: starter # a paid plan is required for a persistent disk
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /data
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: chat-data
+      mountPath: /data
+      sizeGB: 1

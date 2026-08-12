@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Chat Room</title>
+    <meta name="description" content="A small, persistent chat room. Make an account and start talking." />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Auth ------------------------------------------------------------->
+    <main id="auth-view" class="auth" hidden>
+      <div class="auth-card">
+        <h1 class="auth-title">Chat Room</h1>
+        <p class="auth-subtitle">Make an account to join the conversation.</p>
+
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" role="tab" data-mode="login" aria-selected="true">Sign in</button>
+          <button class="tab" role="tab" data-mode="register" aria-selected="false">Create account</button>
+        </div>
+
+        <form id="auth-form" autocomplete="on" novalidate>
+          <label class="field">
+            <span class="field-label">Username</span>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              spellcheck="false"
+              autocapitalize="none"
+              maxlength="20"
+              placeholder="yourname"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Password</span>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              minlength="8"
+              placeholder="At least 8 characters"
+              required
+            />
+          </label>
+
+          <p id="auth-error" class="error" role="alert" hidden></p>
+
+          <button id="auth-submit" class="btn btn-primary" type="submit">Sign in</button>
+        </form>
+
+        <p class="auth-footnote">
+          Anyone with this link can create an account and chat here.
+        </p>
+      </div>
+    </main>
+
+    <!-- Chat ------------------------------------------------------------->
+    <div id="chat-view" class="chat" hidden>
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="room-name">Chat Room</h1>
+          <button
+            id="presence-toggle"
+            class="presence"
+            type="button"
+            aria-expanded="false"
+            title="Who's here"
+          >
+            <span class="dot" aria-hidden="true"></span>
+            <span id="online-count">0 online</span>
+          </button>
+        </div>
+        <div class="topbar-right">
+          <span id="current-user" class="current-user"></span>
+          <button id="logout" class="btn btn-quiet" type="button">Sign out</button>
+        </div>
+        <div id="presence-list" class="presence-list" hidden></div>
+      </header>
+
+      <div id="connection" class="connection" hidden>Reconnecting…</div>
+
+      <main id="messages" class="messages" tabindex="0">
+        <div class="history-top">
+          <button id="load-more" class="btn btn-quiet" type="button" hidden>Load earlier messages</button>
+          <p id="history-start" class="history-note" hidden>This is the beginning of the chat room.</p>
+        </div>
+        <div id="message-list" class="message-list"></div>
+      </main>
+
+      <footer class="composer">
+        <form id="composer-form">
+          <textarea
+            id="composer-input"
+            rows="1"
+            maxlength="2000"
+            placeholder="Message the room…"
+            aria-label="Message"
+          ></textarea>
+          <button id="send" class="btn btn-primary btn-send" type="submit" aria-label="Send">Send</button>
+        </form>
+        <p id="composer-error" class="composer-error" role="alert" hidden></p>
+      </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
