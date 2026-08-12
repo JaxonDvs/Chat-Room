@@ -71,11 +71,22 @@ no session yet.
 ### 4. Turn on Pages
 
 In the repository, go to **Settings → Pages** and set **Source** to **GitHub
-Actions**. That's all — [`.github/workflows/pages.yml`](.github/workflows/pages.yml)
+Actions**. Then [`.github/workflows/pages.yml`](.github/workflows/pages.yml)
 publishes `web/` on every push to `main` that touches it.
 
 The room lands at `https://<your-username>.github.io/Chat-Room/`. That's the
 link you send people.
+
+**If Source is left on "Deploy from a branch"** the site still works, because
+the root [`index.html`](index.html) redirects to `web/`. Without that file
+GitHub builds the repository with Jekyll and turns `README.md` into the
+homepage — which looks exactly like a failed deploy. `.nojekyll` switches that
+processing off.
+
+Worth knowing: in branch mode GitHub runs its own *pages build and deployment*
+job alongside this workflow, and whichever finishes last wins. If the site keeps
+reverting to the README, that race is why — switching Source to GitHub Actions
+stops the other job from running at all.
 
 ### A note on the vendored library
 
