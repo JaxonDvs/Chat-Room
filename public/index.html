@@ -12,52 +12,94 @@
   <body>
     <!-- Auth ------------------------------------------------------------->
     <main id="auth-view" class="auth" hidden>
-      <div class="auth-card">
-        <h1 class="auth-title">Chat Room</h1>
-        <p class="auth-subtitle">Make an account to join the conversation.</p>
+      <div class="auth-orb auth-orb-one" aria-hidden="true"></div>
+      <div class="auth-orb auth-orb-two" aria-hidden="true"></div>
 
-        <div class="tabs" role="tablist">
-          <button class="tab is-active" role="tab" data-mode="login" aria-selected="true">Sign in</button>
-          <button class="tab" role="tab" data-mode="register" aria-selected="false">Create account</button>
-        </div>
+      <div class="auth-layout">
+        <section class="auth-intro" aria-labelledby="intro-title">
+          <div class="brand brand-light">
+            <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+            <span>Chat Room</span>
+          </div>
 
-        <form id="auth-form" autocomplete="on" novalidate>
-          <label class="field">
-            <span class="field-label">Username</span>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              autocomplete="username"
-              spellcheck="false"
-              autocapitalize="none"
-              maxlength="20"
-              placeholder="yourname"
-              required
-            />
-          </label>
+          <div class="intro-copy">
+            <p class="eyebrow">Your shared corner of the internet</p>
+            <h1 id="intro-title">The group chat,<br />without the noise.</h1>
+            <p class="intro-text">
+              A simple place for good conversations with your favourite people.
+              Drop in, catch up and stay connected.
+            </p>
+          </div>
 
-          <label class="field">
-            <span class="field-label">Password</span>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              minlength="8"
-              placeholder="At least 8 characters"
-              required
-            />
-          </label>
+          <div class="intro-features" aria-label="Chat Room features">
+            <div class="feature-pill">
+              <span class="feature-icon feature-icon-live" aria-hidden="true"></span>
+              Live conversation
+            </div>
+            <div class="feature-pill">
+              <span class="feature-icon" aria-hidden="true">↻</span>
+              History that stays
+            </div>
+          </div>
+        </section>
 
-          <p id="auth-error" class="error" role="alert" hidden></p>
+        <section class="auth-card" aria-labelledby="auth-title">
+          <div class="brand brand-mobile">
+            <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+            <span>Chat Room</span>
+          </div>
 
-          <button id="auth-submit" class="btn btn-primary" type="submit">Sign in</button>
-        </form>
+          <p id="auth-kicker" class="auth-kicker">Welcome back</p>
+          <h2 id="auth-title" class="auth-title">Pick up where you left off.</h2>
+          <p id="auth-subtitle" class="auth-subtitle">
+            Sign in to see what everyone has been talking about.
+          </p>
 
-        <p class="auth-footnote">
-          Anyone with this link can create an account and chat here.
-        </p>
+          <div class="tabs" role="tablist" aria-label="Account options">
+            <button class="tab is-active" role="tab" data-mode="login" aria-selected="true">Sign in</button>
+            <button class="tab" role="tab" data-mode="register" aria-selected="false">Create account</button>
+          </div>
+
+          <form id="auth-form" autocomplete="on" novalidate>
+            <label class="field">
+              <span class="field-label">Username</span>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                spellcheck="false"
+                autocapitalize="none"
+                maxlength="20"
+                placeholder="Enter your username"
+                required
+              />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Password</span>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                minlength="8"
+                placeholder="Your password"
+                required
+              />
+            </label>
+
+            <p id="auth-error" class="error" role="alert" hidden></p>
+
+            <button id="auth-submit" class="btn btn-primary auth-submit" type="submit">
+              <span>Sign in</span><span aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <p class="auth-footnote">
+            Anyone with your room link can join the conversation.
+          </p>
+        </section>
       </div>
     </main>
 
@@ -65,20 +107,26 @@
     <div id="chat-view" class="chat" hidden>
       <header class="topbar">
         <div class="topbar-left">
-          <h1 class="room-name">Chat Room</h1>
-          <button
-            id="presence-toggle"
-            class="presence"
-            type="button"
-            aria-expanded="false"
-            title="Who's here"
-          >
-            <span class="dot" aria-hidden="true"></span>
-            <span id="online-count">0 online</span>
-          </button>
+          <span class="brand-mark brand-mark-small" aria-hidden="true"><span></span><span></span></span>
+          <div class="room-heading">
+            <h1 class="room-name">Chat Room</h1>
+            <button
+              id="presence-toggle"
+              class="presence"
+              type="button"
+              aria-expanded="false"
+              title="See who's here"
+            >
+              <span class="dot" aria-hidden="true"></span>
+              <span id="online-count">0 online</span>
+            </button>
+          </div>
         </div>
         <div class="topbar-right">
-          <span id="current-user" class="current-user"></span>
+          <div class="user-chip">
+            <span id="current-user-avatar" class="user-avatar" aria-hidden="true"></span>
+            <span id="current-user" class="current-user"></span>
+          </div>
           <button id="logout" class="btn btn-quiet" type="button">Sign out</button>
         </div>
         <div id="presence-list" class="presence-list" hidden></div>
@@ -96,14 +144,19 @@
 
       <footer class="composer">
         <form id="composer-form">
-          <textarea
-            id="composer-input"
-            rows="1"
-            maxlength="2000"
-            placeholder="Message the room…"
-            aria-label="Message"
-          ></textarea>
-          <button id="send" class="btn btn-primary btn-send" type="submit" aria-label="Send">Send</button>
+          <div class="composer-box">
+            <textarea
+              id="composer-input"
+              rows="1"
+              maxlength="2000"
+              placeholder="Write a message…"
+              aria-label="Message"
+            ></textarea>
+            <button id="send" class="btn btn-primary btn-send" type="submit" aria-label="Send message">
+              <span class="send-label">Send</span><span class="send-arrow" aria-hidden="true">↑</span>
+            </button>
+          </div>
+          <p class="composer-hint">Press Enter to send · Shift + Enter for a new line</p>
         </form>
         <p id="composer-error" class="composer-error" role="alert" hidden></p>
       </footer>
