@@ -10,6 +10,10 @@
     authForm: $('auth-form'),
     authError: $('auth-error'),
     authSubmit: $('auth-submit'),
+    authSubmitText: document.querySelector('#auth-submit span:first-child'),
+    authKicker: $('auth-kicker'),
+    authTitle: $('auth-title'),
+    authSubtitle: $('auth-subtitle'),
     username: $('username'),
     password: $('password'),
     tabs: document.querySelectorAll('.tab'),
@@ -25,6 +29,7 @@
     send: $('send'),
     logout: $('logout'),
     currentUser: $('current-user'),
+    currentUserAvatar: $('current-user-avatar'),
     onlineCount: $('online-count'),
     presenceToggle: $('presence-toggle'),
     presenceList: $('presence-list'),
@@ -92,6 +97,14 @@
 
   function itemTime(item) {
     return item.kind === 'system' ? item.at : item.createdAt;
+  }
+
+  function avatarHue(username) {
+    let hash = 0;
+    for (const character of username) {
+      hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+    }
+    return (hash % 250) + 20;
   }
 
   /**
@@ -167,7 +180,10 @@
 
     const wrapper = document.createElement('article');
     wrapper.className = isLead ? 'msg is-lead' : 'msg';
+    wrapper.classList.toggle('is-own', Boolean(state.me && item.userId === state.me.id));
     wrapper.dataset.id = item.id;
+    wrapper.dataset.initial = item.username.charAt(0).toUpperCase();
+    wrapper.style.setProperty('--avatar-hue', avatarHue(item.username));
 
     if (isLead) {
       const head = document.createElement('div');
@@ -364,7 +380,8 @@
 
   async function showChat(user) {
     state.me = user;
-    el.currentUser.textContent = `Signed in as ${user.username}`;
+    el.currentUser.textContent = user.username;
+    el.currentUserAvatar.textContent = user.username.charAt(0);
     el.authView.hidden = true;
     el.chatView.hidden = false;
 
@@ -383,7 +400,15 @@
       tab.setAttribute('aria-selected', String(active));
     });
 
-    el.authSubmit.textContent = mode === 'login' ? 'Sign in' : 'Create account';
+    const isLogin = mode === 'login';
+    el.authSubmitText.textContent = isLogin ? 'Sign in' : 'Create account';
+    el.authKicker.textContent = isLogin ? 'Welcome back' : 'New here?';
+    el.authTitle.textContent = isLogin
+      ? 'Pick up where you left off.'
+      : 'Make yourself at home.';
+    el.authSubtitle.textContent = isLogin
+      ? 'Sign in to see what everyone has been talking about.'
+      : 'Create an account and jump straight into the conversation.';
     el.password.autocomplete = mode === 'login' ? 'current-password' : 'new-password';
     el.password.placeholder =
       mode === 'login' ? 'Your password' : 'At least 8 characters';

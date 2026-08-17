@@ -23,7 +23,9 @@ instead.
 - **Persistent history** — every message is stored and reloaded when you come
   back. Scroll up to page through older messages.
 - **Live** — messages arrive over a WebSocket, with a list of who's online.
-- **Minimalist white theme** — no dark mode, no clutter, works on phones.
+- **Polished responsive design** — a welcoming sign-in experience, clear
+  message bubbles, profile initials, online status, and a mobile-friendly
+  composer.
 
 ---
 
